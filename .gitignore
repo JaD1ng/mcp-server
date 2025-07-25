@@ -1,0 +1,18 @@
+mcp-server
+.DS_Store
+
+# IDE 和编辑器文件
+.vscode/
+.idea/
+
+# 依赖目录
+vendor/
+
+# 构建目录
+build/
+dist/
+bin/
+
+# 配置文件
+config/config.yaml
+config/config.yml
