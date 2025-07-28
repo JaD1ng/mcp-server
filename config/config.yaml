@@ -1,0 +1,24 @@
+# MCP服务器配置文件示例
+
+# HTTP服务器配置
+http_port: "8080"
+timeout: 30s
+
+# Prometheus监控服务配置
+prometheus:
+  enabled: true
+  url: "http://hd-piko.prometheus.qiniu.io/"
+  endpoint: "/prometheus/mcp" # 可选，默认为 /prometheus/mcp
+
+# Superset数据查询服务配置
+superset:
+  enabled: true
+  url: "http://superset.yzh-logverse.k8s.qiniu.io"
+  user: "dingnanjia"
+  pass: "nanjia123"
+  endpoint: "/superset/mcp" # 可选，默认为 /superset/mcp
+
+# 说明：
+# - enabled: false 可以禁用对应服务
+# - url 为空时该服务将被跳过
+# - endpoint 可以自定义服务的HTTP端点路径

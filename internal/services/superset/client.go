@@ -33,13 +33,13 @@ const (
 
 	// CSRF令牌缓存时间
 	csrfTokenCacheDuration = 5 * time.Minute
-	
+
 	// HTTP传输层配置
-	maxIdleConns        = 100
-	maxIdleConnsPerHost = 10
-	maxConnsPerHost     = 50
-	idleConnTimeout     = 90 * time.Second
-	tlsHandshakeTimeout = 10 * time.Second
+	maxIdleConns          = 100
+	maxIdleConnsPerHost   = 10
+	maxConnsPerHost       = 50
+	idleConnTimeout       = 90 * time.Second
+	tlsHandshakeTimeout   = 10 * time.Second
 	responseHeaderTimeout = 30 * time.Second
 )
 
@@ -92,22 +92,21 @@ func NewClient(baseURL, username, password string, timeout time.Duration) (*Clie
 
 	// 创建优化的HTTP传输层
 	transport := &http.Transport{
-		MaxIdleConns:        maxIdleConns,              // 最大空闲连接数
-		MaxIdleConnsPerHost: maxIdleConnsPerHost,       // 每个主机的最大空闲连接数
-		IdleConnTimeout:     idleConnTimeout,           // 空闲连接超时
-		TLSHandshakeTimeout: tlsHandshakeTimeout,       // TLS握手超时
-		DisableCompression:  false,                     // 启用压缩
-		ForceAttemptHTTP2:   true,                      // 强制尝试HTTP/2
-		// 添加更多优化配置
-		MaxConnsPerHost:       maxConnsPerHost,         // 每个主机的最大连接数
-		ResponseHeaderTimeout: responseHeaderTimeout,   // 响应头超时
+		MaxIdleConns:          maxIdleConns,
+		MaxIdleConnsPerHost:   maxIdleConnsPerHost,
+		IdleConnTimeout:       idleConnTimeout,
+		TLSHandshakeTimeout:   tlsHandshakeTimeout,
+		DisableCompression:    false,
+		ForceAttemptHTTP2:     true,
+		MaxConnsPerHost:       maxConnsPerHost,
+		ResponseHeaderTimeout: responseHeaderTimeout,
 	}
 
 	return &Client{
 		baseURL:   baseURL,
 		username:  username,
 		password:  password,
-		sqlLabURL: baseURL + "/superset/sqllab", // 缓存常用URL
+		sqlLabURL: baseURL + "/superset/sqllab",
 		httpClient: &http.Client{
 			Timeout:   timeout,
 			Jar:       jar,
@@ -152,7 +151,7 @@ func (c *Client) getCSRFToken(ctx context.Context) (string, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	// 双重检查，防止并发重复请求
+	// 双重检查
 	if c.csrfCache.token != "" && time.Now().Before(c.csrfCache.expiresAt) {
 		return c.csrfCache.token, nil
 	}

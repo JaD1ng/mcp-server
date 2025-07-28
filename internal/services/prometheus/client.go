@@ -13,12 +13,9 @@ import (
 
 // 常量定义
 const (
-	// 超时配置
 	defaultConnectionTimeout = 5 * time.Second
-	
-	// 日志前缀
-	logPrefixQuery      = "Prometheus查询警告 [query=%s]: %v"
-	logPrefixRangeQuery = "Prometheus范围查询警告 [query=%s]: %v"
+	logPrefixQuery           = "Prometheus查询警告 [query=%s]: %v"
+	logPrefixRangeQuery      = "Prometheus范围查询警告 [query=%s]: %v"
 )
 
 // Client Prometheus客户端
@@ -28,10 +25,8 @@ type Client struct {
 
 // NewClient 创建新的Prometheus客户端
 func NewClient(serverURL string) (*Client, error) {
-	// 配置HTTP客户端
 	config := api.Config{
-		Address: serverURL,
-		// 添加超时配置
+		Address:      serverURL,
 		RoundTripper: api.DefaultRoundTripper,
 	}
 
@@ -41,11 +36,7 @@ func NewClient(serverURL string) (*Client, error) {
 	}
 
 	v1api := v1.NewAPI(client)
-	c := &Client{
-		client: v1api,
-	}
-
-	return c, nil
+	return &Client{client: v1api}, nil
 }
 
 // QueryInstant 执行即时查询
@@ -88,13 +79,11 @@ func (c *Client) GetTargets(ctx context.Context) (v1.TargetsResult, error) {
 	if err != nil {
 		return v1.TargetsResult{}, fmt.Errorf("获取目标失败: %w", err)
 	}
-
 	return targets, nil
 }
 
 // TestConnection 测试连接
 func (c *Client) TestConnection(ctx context.Context) error {
-	// 创建带超时的上下文
 	testCtx, cancel := context.WithTimeout(ctx, defaultConnectionTimeout)
 	defer cancel()
 
@@ -109,7 +98,6 @@ func (c *Client) GetMetricNames(ctx context.Context) ([]string, error) {
 		return nil, fmt.Errorf("获取指标名称失败: %w", err)
 	}
 
-	// 预分配切片容量
 	result := make([]string, 0, len(names))
 	for _, name := range names {
 		result = append(result, string(name))

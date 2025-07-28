@@ -1,18 +1,25 @@
-mcp-server
-.DS_Store
+# 编译输出
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 
-# IDE 和编辑器文件
-.vscode/
-.idea/
+# 测试二进制文件
+*.test
+
+# 输出目录
+/bin/
 
 # 依赖目录
 vendor/
 
-# 构建目录
-build/
-dist/
-bin/
+# Go工作区文件
+go.work
 
-# 配置文件
-config/config.yaml
-config/config.yml
+# IDE设置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
